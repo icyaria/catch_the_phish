@@ -1,3 +1,5 @@
+let answered = new Set(); // αποθηκεύει ποια email έχουν ήδη μαρκαριστεί
+
 const levels = [
   {
     phishingCount: 1,
@@ -54,6 +56,7 @@ function loadLevel() {
   document.getElementById("emailList").innerHTML = "";
   document.getElementById("emailView").innerHTML = "";
   document.title = "📨 MailSim";
+  answered.clear();
   updateProgress();
 
   level.emails.forEach((email, i) => {
@@ -104,7 +107,12 @@ function goBack() {
 function markAsSpam(index) {
   const email = levels[currentLevel].emails[index];
   const button = document.getElementById(`mark${index}`);
-  if (email.phishing && !button.disabled) {
+
+  if (answered.has(index)) return; // έχει ήδη απαντηθεί
+
+  answered.add(index); // καταγράφεται
+
+  if (email.phishing) {
     marked++;
     button.textContent = "✅ Marked as Spam";
     button.style.backgroundColor = "#34a853";
@@ -112,6 +120,7 @@ function markAsSpam(index) {
     button.textContent = "❌ Not phishing";
     button.style.backgroundColor = "#999";
   }
+
   button.disabled = true;
   updateProgress();
 }
