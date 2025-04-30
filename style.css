@@ -147,18 +147,12 @@ header {
 }
 
 .avatar {
-  background-color: #d2e3fc;
-  color: #1a73e8;
-  font-weight: bold;
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   margin-right: 12px;
-  font-size: 16px;
 }
+
 .email-row {
   display: flex;
   align-items: center;
