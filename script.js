@@ -19,12 +19,11 @@ function renderGameLayout() {
       <button id="nextLevelBtn" onclick="nextLevel()">➡️ Επόμενη Πίστα</button>
     </div>
   `;
+  loadLevel();
 }
 
 function startGame() {
   renderGameLayout();
-  console.log("Ξεκινάμε παιχνίδι...");
-  setTimeout(loadLevel, 0);
 }
 
 function showIntro() {
