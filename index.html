@@ -2,124 +2,162 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8">
-  <title>Προσομοίωση Email Server - Παιχνίδι</title>
+  <title>Προσομοίωση Email Server</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
       margin: 0;
-      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #eaf1fb;
     }
+
     header {
-      background-color: #4285f4;
+      background: #1a73e8;
       color: white;
-      padding: 10px 20px;
+      padding: 15px 25px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
+
     .logo {
-      font-weight: bold;
       font-size: 20px;
+      font-weight: bold;
     }
-    .search-bar {
-      flex-grow: 1;
-      margin: 0 20px;
-    }
+
     .search-bar input {
-      width: 100%;
-      padding: 6px;
-      font-size: 14px;
-      border-radius: 4px;
+      padding: 8px 12px;
+      width: 300px;
+      border-radius: 20px;
       border: none;
+      font-size: 14px;
     }
+
     .icons {
       display: flex;
-      gap: 10px;
+      gap: 12px;
     }
+
     .icon {
-      background-color: white;
-      color: #4285f4;
-      padding: 6px;
+      width: 32px;
+      height: 32px;
+      background: white;
+      color: #1a73e8;
       border-radius: 50%;
-      width: 30px;
-      height: 30px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      cursor: default;
-    }
-    .container {
-      max-width: 800px;
-      margin: 30px auto;
-      background-color: white;
-      border-radius: 5px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .email-list {
-      border-top: 1px solid #ccc;
-    }
-    .email-item {
-      padding: 12px;
-      border-bottom: 1px solid #ccc;
       cursor: pointer;
     }
-    .email-item:hover {
-      background-color: #f9f9f9;
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      padding: 20px;
     }
+
+    .email-list {
+      border-top: 1px solid #ddd;
+    }
+
+    .email-item {
+      border-bottom: 1px solid #eee;
+      padding: 15px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .email-item:hover {
+      background: #f5f8fd;
+    }
+
     .email-item strong {
       display: block;
+      font-size: 16px;
+      color: #202124;
     }
+
+    .email-item span {
+      color: #5f6368;
+      font-size: 13px;
+    }
+
     .email-view {
       display: none;
-    }
-    .email-view.active {
-      display: block;
-      border-top: 1px solid #ccc;
       margin-top: 20px;
       padding-top: 10px;
+      border-top: 1px solid #ddd;
     }
+
+    .email-view.active {
+      display: block;
+    }
+
     .email-view h3 {
-      margin-top: 0;
+      margin: 0;
+      color: #1a73e8;
     }
-    .progress {
-      text-align: right;
-      font-weight: bold;
+
+    .email-view p {
+      font-size: 15px;
+      color: #202124;
+    }
+
+    .spam-btn {
       margin-top: 15px;
+      background: #d93025;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
     }
+
+    .spam-btn:hover {
+      background: #b1271b;
+    }
+
+    .spam-btn:disabled {
+      background: gray;
+      cursor: default;
+    }
+
+    .progress {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: right;
+      color: #1a73e8;
+    }
+
     #nextLevelBtn {
       display: none;
       margin: 20px auto;
-      display: block;
-      padding: 10px 20px;
-      background-color: #34a853;
-      color: white;
-      border: none;
-      border-radius: 5px;
+      padding: 10px 24px;
       font-size: 16px;
-      cursor: pointer;
-    }
-    .spam-btn {
-      margin-top: 10px;
-      padding: 8px 14px;
-      background-color: #ff4d4d;
+      background-color: #1a73e8;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 24px;
       cursor: pointer;
+      transition: background 0.3s;
     }
-    .spam-btn:disabled {
-      background-color: gray;
-      cursor: default;
+
+    #nextLevelBtn:hover {
+      background: #155ab6;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">📧 MailSim</div>
-    <div class="search-bar"><input type="text" placeholder="Αναζήτηση μηνυμάτων..."></div>
+    <div class="logo">📨 MailSim</div>
+    <div class="search-bar">
+      <input type="text" placeholder="Αναζήτηση στο inbox...">
+    </div>
     <div class="icons">
       <div class="icon">⚙</div>
       <div class="icon">❓</div>
@@ -131,7 +169,7 @@
     <div id="emailList" class="email-list"></div>
     <div id="emailView" class="email-view"></div>
     <div class="progress" id="progress"></div>
-    <button id="nextLevelBtn" onclick="nextLevel()">Επόμενη Πίστα</button>
+    <button id="nextLevelBtn" onclick="nextLevel()">➡️ Επόμενη Πίστα</button>
   </div>
 
   <script>
@@ -141,19 +179,19 @@
         emails: [
           {
             subject: "Ενημέρωση διαγωνίσματος Μαθηματικών",
-            from: "γραμματεία@school.gr",
+            from: "📚 Γραμματεία Σχολείου <info@school.gr>",
             body: "Το διαγώνισμα θα γίνει τη Δευτέρα στην αίθουσα Β1. Καλή επιτυχία!",
             phishing: false
           },
           {
             subject: "Ο λογαριασμός σου θα διαγραφεί!",
-            from: "support@email-center.xyz",
-            body: "Συνδέσου άμεσα στο http://fake-secure-login.com για να αποτρέψεις την απενεργοποίηση του email σου!",
+            from: "⚠️ Email Support <support@secure.xyz>",
+            body: "Συνδέσου άμεσα στο http://fake-login.com για να αποτρέψεις την απενεργοποίηση του email σου.",
             phishing: true
           },
           {
             subject: "Αλλαγή ώρας εκδρομής",
-            from: "δασκάλα@school.gr",
+            from: "🚌 Δασκάλα Τμήματος <teacher@school.gr>",
             body: "Η εκδρομή μεταφέρεται για την Παρασκευή λόγω καιρού.",
             phishing: false
           }
@@ -164,19 +202,19 @@
         emails: [
           {
             subject: "Δωροεπιταγή 500€ από το Jumbo!",
-            from: "jumbo-offers@winbig.gr",
-            body: "Συγχαρητήρια! Κέρδισες! Κάνε κλικ εδώ για να παραλάβεις: http://jumbo-freegift.ru",
+            from: "🎁 Jumbo Promo <gift@winbig.ru>",
+            body: "Συγχαρητήρια! Κέρδισες! Πάτησε εδώ: http://jumbo-freegift.ru",
             phishing: true
           },
           {
-            subject: "Αναστολή του email λογαριασμού σου",
-            from: "webadmin@school.net",
-            body: "Στείλε μας τον κωδικό σου για να ενεργοποιηθεί ξανά ο λογαριασμός σου.",
+            subject: "Αναστολή λογαριασμού email",
+            from: "🔒 Διαχειριστής <webadmin@school.net>",
+            body: "Στείλε μας το password σου για να ενεργοποιηθεί ξανά ο λογαριασμός σου.",
             phishing: true
           },
           {
-            subject: "Σύλλογος Γονέων – Νέα Συνάντηση",
-            from: "syllogos@school.gr",
+            subject: "Συνάντηση Συλλόγου Γονέων",
+            from: "👪 Σύλλογος Γονέων <parents@school.gr>",
             body: "Η επόμενη συνάντηση θα γίνει την Παρασκευή στην αίθουσα Α3.",
             phishing: false
           }
@@ -198,7 +236,7 @@
       level.emails.forEach((email, i) => {
         const item = document.createElement("div");
         item.className = "email-item";
-        item.innerHTML = `<strong>${email.subject}</strong><span>Από: ${email.from}</span>`;
+        item.innerHTML = `<strong>${email.subject}</strong><span>${email.from}</span>`;
         item.onclick = () => openEmail(email, i);
         document.getElementById("emailList").appendChild(item);
       });
@@ -207,11 +245,22 @@
     function openEmail(email, index) {
       const view = document.getElementById("emailView");
       view.classList.add("active");
+
+      // 🎧 ήχος ανοίγματος
+      const audio = new Audio("https://notificationsounds.com/storage/sounds/file-sounds-1148-pristine.mp3");
+      audio.play();
+
+      // Tooltip για phishing links
+      let emailBody = email.body;
+      if (email.phishing) {
+        emailBody = emailBody.replace(/(http[^\\s]+)/g, `<span title='⚠️ Προσοχή! Ύποπτος σύνδεσμος'>$1 ⚠️</span>`);
+      }
+
       view.innerHTML = `
         <h3>${email.subject}</h3>
         <p><strong>Από:</strong> ${email.from}</p>
-        <p>${email.body}</p>
-        <button class="spam-btn" id="mark${index}" onclick="markAsSpam(${index})">Mark as Spam</button>
+        <p>${emailBody}</p>
+        <button class="spam-btn" id="mark${index}" onclick="markAsSpam(${index})">🚫 Mark as Spam</button>
       `;
     }
 
@@ -220,11 +269,11 @@
       const button = document.getElementById(`mark${index}`);
       if (email.phishing && !button.disabled) {
         marked++;
-        button.textContent = "Marked ✅";
+        button.textContent = "✅ Marked as Spam";
         button.style.backgroundColor = "#34a853";
       } else {
-        button.textContent = "Not phishing";
-        button.style.backgroundColor = "gray";
+        button.textContent = "❌ Not phishing";
+        button.style.backgroundColor = "#999";
       }
       button.disabled = true;
       updateProgress();
@@ -232,7 +281,7 @@
 
     function updateProgress() {
       const level = levels[currentLevel];
-      document.getElementById("progress").textContent = `Marked: ${marked}/${level.phishingCount}`;
+      document.getElementById("progress").textContent = `📌 Marked: ${marked}/${level.phishingCount}`;
       if (marked === level.phishingCount) {
         document.getElementById("nextLevelBtn").style.display = "block";
       }
@@ -244,10 +293,10 @@
         loadLevel();
       } else {
         document.body.innerHTML = `
-          <header><h1>🎉 Τέλος παιχνιδιού!</h1></header>
+          <header><h1 style="padding:20px;color:white;background:#1a73e8;">🎉 Μπράβο!</h1></header>
           <div class="container">
-            <p>Συγχαρητήρια! Εντόπισες όλα τα ύποπτα emails.</p>
-            <p>Να θυμάσαι: ΠΟΤΕ μην δίνεις κωδικούς ή πατάς σε ύποπτους συνδέσμους.</p>
+            <p>Εντόπισες όλα τα ύποπτα emails!</p>
+            <p>Να θυμάσαι πάντα να προσέχεις links και να μην αποκαλύπτεις προσωπικά στοιχεία!</p>
           </div>`;
       }
     }
@@ -256,3 +305,5 @@
   </script>
 </body>
 </html>
+
+
