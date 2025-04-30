@@ -1,5 +1,3 @@
-// script.js
-
 const levels = [
   {
     phishingCount: 1,
@@ -55,13 +53,14 @@ function loadLevel() {
   document.getElementById("nextLevelBtn").style.display = "none";
   document.getElementById("emailList").innerHTML = "";
   document.getElementById("emailView").innerHTML = "";
+  document.title = "📨 MailSim";
   updateProgress();
 
   level.emails.forEach((email, i) => {
     const item = document.createElement("div");
     item.className = "email-item";
-    const initials = email.from.trim().charAt(0).toUpperCase();
     const avatarURL = `https://ui-avatars.com/api/?name=${encodeURIComponent(email.from)}&background=d2e3fc&color=1a73e8&size=36`;
+
     item.innerHTML = `
       <div class="email-row">
         <img class="avatar" src="${avatarURL}" alt="avatar">
@@ -77,14 +76,10 @@ function loadLevel() {
 }
 
 function openEmail(email, index, clickedItem) {
-
   document.querySelectorAll(".email-item").forEach(el => el.classList.remove("selected"));
   clickedItem.classList.add("selected");
 
-
   document.title = `📨 MailSim | ${email.subject}`;
-
-
   const bodyWithLinks = email.body.replace(/(http[^ \n]+)/g, `<a href="suspicious.html" target="_blank">$1</a>`);
 
   const view = document.getElementById("emailView");
@@ -144,5 +139,3 @@ function nextLevel() {
 }
 
 window.onload = loadLevel;
-
-  
