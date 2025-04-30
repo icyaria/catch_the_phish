@@ -1,3 +1,17 @@
+function showIntro() {
+  document.body.innerHTML = `
+    <header><h1 style="padding:20px;color:white;background:#1a73e8;">📨 MailSim - Εκπαίδευση Phishing</h1></header>
+    <div class="container" style="text-align:center;">
+      <h2>Καλώς ήρθες!</h2>
+      <p>Σε αυτό το παιχνίδι, θα δεις εισερχόμενα emails. Ο στόχος σου είναι να εντοπίσεις ποια από αυτά είναι <strong>ύποπτα (phishing)</strong>.</p>
+      <p>Κάνε <strong>κλικ</strong> στο κάθε email για να το ανοίξεις, και αν υποψιάζεσαι ότι είναι phishing, πάτησε <strong>\"Mark as Spam\"</strong>.</p>
+      <p>Πρόσεξε τους συνδέσμους και τα αιτήματα για προσωπικά δεδομένα!</p>
+      <button class="spam-btn" style="margin-top:30px;" onclick="loadLevel()">👉 Ξεκίνα το Παιχνίδι</button>
+    </div>
+  `;
+}
+
+
 const levels = [
   {
     phishingCount: 1,
@@ -221,4 +235,5 @@ function setupLiveQuiz() {
 }
 
 
-window.onload = loadLevel;
+window.onload = showIntro;
+
