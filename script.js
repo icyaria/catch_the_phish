@@ -60,7 +60,17 @@ function loadLevel() {
   level.emails.forEach((email, i) => {
     const item = document.createElement("div");
     item.className = "email-item";
-    item.innerHTML = `<strong>${email.subject}</strong><span>Από: ${email.from}</span>`;
+    const initials = email.from.trim().charAt(0).toUpperCase();
+    item.innerHTML = `
+      <div class="email-row">
+        <div class="avatar">${initials}</div>
+        <div>
+          <strong>${email.subject}</strong><br>
+          <span>${email.from}</span>
+        </div>
+      </div>
+    `;
+
     item.onclick = () => openEmail(email, i, item);
     document.getElementById("emailList").appendChild(item);
   });
