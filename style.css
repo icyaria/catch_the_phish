@@ -1,53 +1,147 @@
 body {
-    font-family: "Comic Sans MS", cursive, sans-serif;
-    background-color: #f0f8ff;
-    text-align: center;
-    padding: 30px;
-  }
-  
-  #emails {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    margin-top: 20px;
-  }
-  
-  .email {
-    width: 60%;
-    padding: 15px;
-    border: 2px solid #ccc;
-    background-color: #ffffff;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  
-  .email:hover {
-    transform: scale(1.02);
-  }
-  
-  .correct {
-    border-color: green;
-    background-color: #e6ffe6;
-  }
-  
-  .incorrect {
-    border-color: red;
-    background-color: #ffe6e6;
-  }
-  
-  #next-btn {
-    display: none;
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    cursor: pointer;
-  }
-  
-  #result {
-    font-size: 20px;
-    margin-top: 20px;
-    color: #333;
-  }
-  
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f1f3f4;
+  color: #202124;
+}
+
+header {
+  background: #1a73e8;
+  color: white;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.search-bar input {
+  padding: 8px 14px;
+  width: 300px;
+  border-radius: 20px;
+  border: none;
+  font-size: 14px;
+}
+
+.icons {
+  display: flex;
+  gap: 12px;
+}
+
+.icon {
+  background: white;
+  color: #1a73e8;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.email-list {
+  border-top: 1px solid #ddd;
+}
+
+.email-item {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.email-item:hover {
+  background: #f1f7ff;
+}
+
+.email-item strong {
+  font-size: 16px;
+  color: #202124;
+  display: block;
+}
+
+.email-item span {
+  color: #5f6368;
+  font-size: 13px;
+}
+
+.email-view {
+  display: none;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #ccc;
+}
+
+.email-view.active {
+  display: block;
+}
+
+.email-view h3 {
+  margin: 0;
+  color: #1a73e8;
+}
+
+.email-view p {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.spam-btn {
+  background: #d93025;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.spam-btn:hover {
+  background: #b1271b;
+}
+
+.spam-btn:disabled {
+  background: gray;
+  cursor: default;
+}
+
+.progress {
+  text-align: right;
+  margin-top: 20px;
+  font-weight: bold;
+  color: #1a73e8;
+}
+
+#nextLevelBtn {
+  display: none;
+  margin: 30px auto;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 10px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#nextLevelBtn:hover {
+  background: #155ab6;
+}
