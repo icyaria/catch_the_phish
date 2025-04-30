@@ -1,5 +1,3 @@
-let answered = new Set(); // αποθηκεύει ποια email έχουν ήδη μαρκαριστεί
-
 const levels = [
   {
     phishingCount: 1,
@@ -48,6 +46,7 @@ const levels = [
 
 let currentLevel = 0;
 let marked = 0;
+let answered = new Set();
 
 function loadLevel() {
   const level = levels[currentLevel];
@@ -108,9 +107,8 @@ function markAsSpam(index) {
   const email = levels[currentLevel].emails[index];
   const button = document.getElementById(`mark${index}`);
 
-  if (answered.has(index)) return; // έχει ήδη απαντηθεί
-
-  answered.add(index); // καταγράφεται
+  if (answered.has(index)) return; 
+  answered.add(index); 
 
   if (email.phishing) {
     marked++;
@@ -138,13 +136,90 @@ function nextLevel() {
   if (currentLevel < levels.length) {
     loadLevel();
   } else {
-    document.body.innerHTML = `
-      <header><h1 style="padding:20px;color:white;background:#1a73e8;">🎉 Μπράβο!</h1></header>
-      <div class="container">
-        <p>Εντόπισες όλα τα ύποπτα emails!</p>
-        <p>Να θυμάσαι πάντα να προσέχεις links και να μην αποκαλύπτεις προσωπικά στοιχεία!</p>
-      </div>`;
+      showFinalQuiz();
   }
 }
+
+function showFinalQuiz() {
+  document.body.innerHTML = `
+    <header><h1 style="padding:20px;color:white;background:#1a73e8;">🎉 Τέλος Παιχνιδιού!</h1></header>
+    <div class="container">
+      <p>Μπράβο! Εντόπισες όλα τα ύποπτα emails.</p>
+      <p>Πριν τελειώσεις, απάντησε στις παρακάτω ερωτήσεις:</p>
+
+      <form id="quizForm">
+        <h3>1. Τι είναι phishing email;</h3>
+        <label><input type="radio" name="q1" value="a"> Ένα email από φίλο</label><br>
+        <label><input type="radio" name="q1" value="b"> Ένα παραπλανητικό email που προσπαθεί να σου αποσπάσει στοιχεία</label><br>
+        <label><input type="radio" name="q1" value="c"> Μήνυμα διακοπών</label>
+        <p id="feedback-q1"></p>
+
+        <h3>2. Ποιο από τα παρακάτω είναι σημάδι ότι ένα email μπορεί να είναι phishing;</h3>
+        <label><input type="radio" name="q4" value="a"> Περιέχει ευγενικό και σωστό χαιρετισμό</label><br>
+        <label><input type="radio" name="q4" value="b"> Έρχεται από επίσημη διεύθυνση email του σχολείου</label><br>
+        <label><input type="radio" name="q4" value="c"> Ζητάει επειγόντως να πατήσεις έναν σύνδεσμο ή να δώσεις προσωπικά στοιχεία</label><br>
+        <p id="feedback-q2"></p>
+
+        <h3>3. Ποια είναι η σωστή ενέργεια όταν δεις τέτοιο email;</h3>
+        <label><input type="radio" name="q3" value="a"> Να το στείλεις σε φίλους</label><br>
+        <label><input type="radio" name="q3" value="b"> Να το μαρκάρεις ως spam</label><br>
+        <label><input type="radio" name="q3" value="c"> Να απαντήσεις για διευκρινίσεις</label><br><br>
+        <p id="feedback-q3"></p>
+
+      </form>
+
+      <div id="quizResult" style="margin-top:20px;font-weight:bold;"></div>
+    </div>
+  `;
+  setupLiveQuiz();
+}
+
+function setupLiveQuiz() {
+  const correctAnswers = {
+    q1: "b",
+    q2: "b",
+    q3: "b",
+    q4: "c"
+  };
+
+  let score = 0;
+
+  Object.keys(correctAnswers).forEach(q => {
+    const radios = document.querySelectorAll(`input[name="${q}"]`);
+    radios.forEach(radio => {
+      radio.addEventListener("change", () => {
+        const feedback = document.getElementById(`feedback-${q}`);
+        if (radio.value === correctAnswers[q]) {
+          feedback.textContent = "✅ Σωστά!";
+          feedback.style.color = "#34a853";
+        } else {
+          feedback.textContent = "❌ Λάθος.";
+          feedback.style.color = "#d93025";
+        }
+
+        // Υπολογισμός συνολικού σκορ
+        const allAnswered = Object.keys(correctAnswers).every(qn => {
+          return document.querySelector(`input[name="${qn}"]:checked`);
+        });
+
+        if (allAnswered) {
+          const correctCount = Object.keys(correctAnswers).filter(qn =>
+            document.querySelector(`input[name="${qn}"]:checked`)?.value === correctAnswers[qn]
+          ).length;
+
+          const result = document.getElementById("quizResult");
+          if (correctCount === 4) {
+            result.textContent = "🎉 Μπράβο! Όλες οι απαντήσεις είναι σωστές!";
+            result.style.color = "#34a853";
+          } else {
+            result.textContent = `⚠️ ${correctCount}/4 σωστά. Μπορείς να διορθώσεις τα λάθη σου.`;
+            result.style.color = "#e53935";
+          }
+        }
+      });
+    });
+  });
+}
+
 
 window.onload = loadLevel;
