@@ -61,16 +61,16 @@ function loadLevel() {
     const item = document.createElement("div");
     item.className = "email-item";
     const initials = email.from.trim().charAt(0).toUpperCase();
+    const avatarURL = `https://ui-avatars.com/api/?name=${encodeURIComponent(email.from)}&background=d2e3fc&color=1a73e8&size=36`;
     item.innerHTML = `
       <div class="email-row">
-        <div class="avatar">${initials}</div>
+        <img class="avatar" src="${avatarURL}" alt="avatar">
         <div>
           <strong>${email.subject}</strong><br>
           <span>${email.from}</span>
         </div>
       </div>
     `;
-
     item.onclick = () => openEmail(email, i, item);
     document.getElementById("emailList").appendChild(item);
   });
