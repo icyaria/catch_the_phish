@@ -261,11 +261,11 @@ function setupLiveQuiz() {
           ).length;
 
           const result = document.getElementById("quizResult");
-          if (correctCount === 4) {
+          if (correctCount === 3) {
             result.textContent = "🎉 Μπράβο! Όλες οι απαντήσεις είναι σωστές!";
             result.style.color = "#34a853";
           } else {
-            result.textContent = `⚠️ ${correctCount}/4 σωστά. Μπορείς να διορθώσεις τα λάθη σου.`;
+            result.textContent = `⚠️ ${correctCount}/3 σωστά. Μπορείς να διορθώσεις τα λάθη σου.`;
             result.style.color = "#e53935";
           }
         }
