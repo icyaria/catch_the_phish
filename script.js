@@ -251,9 +251,9 @@ function setupLiveQuiz() {
         }
 
         // Υπολογισμός συνολικού σκορ
-        const allAnswered = Object.keys(correctAnswers).every(qn => {
-          return document.querySelector(`input[name="${qn}"]:checked`);
-        });
+        const allAnswered = [...document.querySelectorAll("input[type='radio']")]
+          .filter(r => r.checked).length === Object.keys(correctAnswers).length;
+
 
         if (allAnswered) {
           const correctCount = Object.keys(correctAnswers).filter(qn =>
