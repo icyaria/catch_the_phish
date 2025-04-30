@@ -70,6 +70,10 @@ header {
   background: #f1f7ff;
 }
 
+.email-item.selected {
+  background: #e3f2fd;
+}
+
 .email-item strong {
   font-size: 16px;
   color: #202124;
