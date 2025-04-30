@@ -13,45 +13,81 @@
     header {
       background-color: #4285f4;
       color: white;
-      padding: 20px;
-      text-align: center;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    .inbox {
-      max-width: 700px;
+    .logo {
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .search-bar {
+      flex-grow: 1;
+      margin: 0 20px;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 6px;
+      font-size: 14px;
+      border-radius: 4px;
+      border: none;
+    }
+    .icons {
+      display: flex;
+      gap: 10px;
+    }
+    .icon {
+      background-color: white;
+      color: #4285f4;
+      padding: 6px;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: default;
+    }
+    .container {
+      max-width: 800px;
       margin: 30px auto;
       background-color: white;
       border-radius: 5px;
       padding: 20px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .email {
+    .email-list {
+      border-top: 1px solid #ccc;
+    }
+    .email-item {
+      padding: 12px;
       border-bottom: 1px solid #ccc;
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .email:last-child {
-      border-bottom: none;
-    }
-    .email p {
-      margin: 0;
-    }
-    button.mark {
-      background-color: #ff4d4d;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
       cursor: pointer;
     }
-    button.mark:disabled {
-      background-color: #999;
+    .email-item:hover {
+      background-color: #f9f9f9;
+    }
+    .email-item strong {
+      display: block;
+    }
+    .email-view {
+      display: none;
+    }
+    .email-view.active {
+      display: block;
+      border-top: 1px solid #ccc;
+      margin-top: 20px;
+      padding-top: 10px;
+    }
+    .email-view h3 {
+      margin-top: 0;
     }
     .progress {
       text-align: right;
       font-weight: bold;
-      margin-top: 10px;
+      margin-top: 15px;
     }
     #nextLevelBtn {
       display: none;
@@ -65,33 +101,85 @@
       font-size: 16px;
       cursor: pointer;
     }
+    .spam-btn {
+      margin-top: 10px;
+      padding: 8px 14px;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .spam-btn:disabled {
+      background-color: gray;
+      cursor: default;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>📧 Προσομοίωση Email Server - Εντόπισε τα Phishing!</h1>
+    <div class="logo">📧 MailSim</div>
+    <div class="search-bar"><input type="text" placeholder="Αναζήτηση μηνυμάτων..."></div>
+    <div class="icons">
+      <div class="icon">⚙</div>
+      <div class="icon">❓</div>
+      <div class="icon">👤</div>
+    </div>
   </header>
 
-  <div class="inbox" id="inbox"></div>
-  <div class="progress" id="progress"></div>
-  <button id="nextLevelBtn" onclick="nextLevel()">Επόμενη Πίστα</button>
+  <div class="container">
+    <div id="emailList" class="email-list"></div>
+    <div id="emailView" class="email-view"></div>
+    <div class="progress" id="progress"></div>
+    <button id="nextLevelBtn" onclick="nextLevel()">Επόμενη Πίστα</button>
+  </div>
 
   <script>
     const levels = [
       {
         phishingCount: 1,
         emails: [
-          { text: "Το διαγώνισμα Μαθηματικών είναι τη Δευτέρα.", phishing: false },
-          { text: "Ο λογαριασμός σου θα διαγραφεί! Συνδέσου εδώ αμέσως!", phishing: true },
-          { text: "Η εκδρομή μεταφέρθηκε για Παρασκευή.", phishing: false }
+          {
+            subject: "Ενημέρωση διαγωνίσματος Μαθηματικών",
+            from: "γραμματεία@school.gr",
+            body: "Το διαγώνισμα θα γίνει τη Δευτέρα στην αίθουσα Β1. Καλή επιτυχία!",
+            phishing: false
+          },
+          {
+            subject: "Ο λογαριασμός σου θα διαγραφεί!",
+            from: "support@email-center.xyz",
+            body: "Συνδέσου άμεσα στο http://fake-secure-login.com για να αποτρέψεις την απενεργοποίηση του email σου!",
+            phishing: true
+          },
+          {
+            subject: "Αλλαγή ώρας εκδρομής",
+            from: "δασκάλα@school.gr",
+            body: "Η εκδρομή μεταφέρεται για την Παρασκευή λόγω καιρού.",
+            phishing: false
+          }
         ]
       },
       {
         phishingCount: 2,
         emails: [
-          { text: "Συγχαρητήρια! Κέρδισες δωροεπιταγή 500€ από το Jumbo!", phishing: true },
-          { text: "Στείλε μας τα στοιχεία σου για να επανενεργοποιηθεί το email σου.", phishing: true },
-          { text: "Η συνάντηση με τον Σύλλογο Γονέων θα γίνει στην αίθουσα Α3.", phishing: false }
+          {
+            subject: "Δωροεπιταγή 500€ από το Jumbo!",
+            from: "jumbo-offers@winbig.gr",
+            body: "Συγχαρητήρια! Κέρδισες! Κάνε κλικ εδώ για να παραλάβεις: http://jumbo-freegift.ru",
+            phishing: true
+          },
+          {
+            subject: "Αναστολή του email λογαριασμού σου",
+            from: "webadmin@school.net",
+            body: "Στείλε μας τον κωδικό σου για να ενεργοποιηθεί ξανά ο λογαριασμός σου.",
+            phishing: true
+          },
+          {
+            subject: "Σύλλογος Γονέων – Νέα Συνάντηση",
+            from: "syllogos@school.gr",
+            body: "Η επόμενη συνάντηση θα γίνει την Παρασκευή στην αίθουσα Α3.",
+            phishing: false
+          }
         ]
       }
     ];
@@ -101,41 +189,44 @@
 
     function loadLevel() {
       const level = levels[currentLevel];
-      const inbox = document.getElementById("inbox");
-      inbox.innerHTML = "";
       marked = 0;
       document.getElementById("nextLevelBtn").style.display = "none";
+      document.getElementById("emailList").innerHTML = "";
+      document.getElementById("emailView").innerHTML = "";
       updateProgress();
 
-      level.emails.forEach((email, index) => {
-        const div = document.createElement("div");
-        div.className = "email";
-
-        const text = document.createElement("p");
-        text.textContent = email.text;
-
-        const button = document.createElement("button");
-        button.className = "mark";
-        button.textContent = "Mark as Spam";
-        button.onclick = () => markAsSpam(button, email.phishing);
-
-        div.appendChild(text);
-        div.appendChild(button);
-        inbox.appendChild(div);
+      level.emails.forEach((email, i) => {
+        const item = document.createElement("div");
+        item.className = "email-item";
+        item.innerHTML = `<strong>${email.subject}</strong><span>Από: ${email.from}</span>`;
+        item.onclick = () => openEmail(email, i);
+        document.getElementById("emailList").appendChild(item);
       });
     }
 
-    function markAsSpam(button, isPhishing) {
-      if (isPhishing) {
+    function openEmail(email, index) {
+      const view = document.getElementById("emailView");
+      view.classList.add("active");
+      view.innerHTML = `
+        <h3>${email.subject}</h3>
+        <p><strong>Από:</strong> ${email.from}</p>
+        <p>${email.body}</p>
+        <button class="spam-btn" id="mark${index}" onclick="markAsSpam(${index})">Mark as Spam</button>
+      `;
+    }
+
+    function markAsSpam(index) {
+      const email = levels[currentLevel].emails[index];
+      const button = document.getElementById(`mark${index}`);
+      if (email.phishing && !button.disabled) {
         marked++;
-        button.disabled = true;
         button.textContent = "Marked ✅";
         button.style.backgroundColor = "#34a853";
       } else {
-        button.disabled = true;
-        button.textContent = "Not Phishing";
-        button.style.backgroundColor = "#ccc";
+        button.textContent = "Not phishing";
+        button.style.backgroundColor = "gray";
       }
+      button.disabled = true;
       updateProgress();
     }
 
@@ -153,9 +244,11 @@
         loadLevel();
       } else {
         document.body.innerHTML = `
-          <header><h1>🎉 Μπράβο σου!</h1></header>
-          <div class="inbox"><p>Εντόπισες όλα τα phishing emails με επιτυχία!</p>
-          <p>Να θυμάσαι πάντα να προσέχεις τα ύποπτα μηνύματα στο inbox σου!</p></div>`;
+          <header><h1>🎉 Τέλος παιχνιδιού!</h1></header>
+          <div class="container">
+            <p>Συγχαρητήρια! Εντόπισες όλα τα ύποπτα emails.</p>
+            <p>Να θυμάσαι: ΠΟΤΕ μην δίνεις κωδικούς ή πατάς σε ύποπτους συνδέσμους.</p>
+          </div>`;
       }
     }
 
