@@ -177,9 +177,8 @@ function showFinalQuiz() {
 function setupLiveQuiz() {
   const correctAnswers = {
     q1: "b",
-    q2: "b",
+    q2: "c",
     q3: "b",
-    q4: "c"
   };
 
   let score = 0;
