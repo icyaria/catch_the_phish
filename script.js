@@ -23,7 +23,8 @@ function renderGameLayout() {
 
 function startGame() {
   renderGameLayout();
-  loadLevel();
+  console.log("Ξεκινάμε παιχνίδι...");
+  setTimeout(loadLevel, 0);
 }
 
 function showIntro() {
