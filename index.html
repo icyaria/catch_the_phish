@@ -245,24 +245,18 @@
     function openEmail(email, index) {
       const view = document.getElementById("emailView");
       view.classList.add("active");
-
-      // 🎧 ήχος ανοίγματος
-      const audio = new Audio("https://notificationsounds.com/storage/sounds/file-sounds-1148-pristine.mp3");
-      audio.play();
-
-      // Tooltip για phishing links
-      let emailBody = email.body;
-      if (email.phishing) {
-        emailBody = emailBody.replace(/(http[^\\s]+)/g, `<span title='⚠️ Προσοχή! Ύποπτος σύνδεσμος'>$1 ⚠️</span>`);
-      }
-
+    
+      // Αντικαθιστούμε links με <a href="suspicious.html">
+      const safeBody = email.body.replace(/(http[^\\s]+)/g, `<a href="suspicious.html" target="_blank">$1</a>`);
+    
       view.innerHTML = `
         <h3>${email.subject}</h3>
         <p><strong>Από:</strong> ${email.from}</p>
-        <p>${emailBody}</p>
+        <p>${safeBody}</p>
         <button class="spam-btn" id="mark${index}" onclick="markAsSpam(${index})">🚫 Mark as Spam</button>
       `;
     }
+
 
     function markAsSpam(index) {
       const email = levels[currentLevel].emails[index];
