@@ -60,7 +60,7 @@ const levels = [
 
 let currentLevel = 0;
 let marked = 0;
-let answered = new Set();
+let answered = new Map(); 
 
 function loadLevel() {
   const level = levels[currentLevel];
@@ -108,6 +108,18 @@ function openEmail(email, index, clickedItem) {
     <br><br>
     <button class="spam-btn" style="background:#ccc;color:#333;" onclick="goBack()">🔙 Πίσω στο Inbox</button>
   `;
+  const button = document.getElementById(`mark${index}`);
+  if (answered.has(index)) {
+    button.disabled = true;
+    const result = answered.get(index);
+    if (result === "correct") {
+      button.textContent = "✅ Marked as Spam";
+      button.style.backgroundColor = "#34a853";
+    } else {
+      button.textContent = "❌ Not phishing";
+      button.style.backgroundColor = "#999";
+    }
+  }
 }
 
 function goBack() {
@@ -122,13 +134,14 @@ function markAsSpam(index) {
   const button = document.getElementById(`mark${index}`);
 
   if (answered.has(index)) return; 
-  answered.add(index); 
 
   if (email.phishing) {
     marked++;
+    answered.set(index, "correct");
     button.textContent = "✅ Marked as Spam";
     button.style.backgroundColor = "#34a853";
   } else {
+    answered.set(index, "wrong");
     button.textContent = "❌ Not phishing";
     button.style.backgroundColor = "#999";
   }
@@ -169,9 +182,9 @@ function showFinalQuiz() {
         <p id="feedback-q1"></p>
 
         <h3>2. Ποιο από τα παρακάτω είναι σημάδι ότι ένα email μπορεί να είναι phishing;</h3>
-        <label><input type="radio" name="q4" value="a"> Περιέχει ευγενικό και σωστό χαιρετισμό</label><br>
-        <label><input type="radio" name="q4" value="b"> Έρχεται από επίσημη διεύθυνση email του σχολείου</label><br>
-        <label><input type="radio" name="q4" value="c"> Ζητάει επειγόντως να πατήσεις έναν σύνδεσμο ή να δώσεις προσωπικά στοιχεία</label><br>
+        <label><input type="radio" name="q2" value="a"> Περιέχει ευγενικό και σωστό χαιρετισμό</label><br>
+        <label><input type="radio" name="q2" value="b"> Έρχεται από επίσημη διεύθυνση email του σχολείου</label><br>
+        <label><input type="radio" name="q2" value="c"> Ζητάει επειγόντως να πατήσεις έναν σύνδεσμο ή να δώσεις προσωπικά στοιχεία</label><br>
         <p id="feedback-q2"></p>
 
         <h3>3. Ποια είναι η σωστή ενέργεια όταν δεις τέτοιο email;</h3>
