@@ -2,17 +2,164 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8">
-  <title>Phishing Email Game</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Προσομοίωση Email Server - Παιχνίδι</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #4285f4;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .inbox {
+      max-width: 700px;
+      margin: 30px auto;
+      background-color: white;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .email {
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .email:last-child {
+      border-bottom: none;
+    }
+    .email p {
+      margin: 0;
+    }
+    button.mark {
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button.mark:disabled {
+      background-color: #999;
+    }
+    .progress {
+      text-align: right;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    #nextLevelBtn {
+      display: none;
+      margin: 20px auto;
+      display: block;
+      padding: 10px 20px;
+      background-color: #34a853;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <div id="game">
-    <h1>🛡️ Εντόπισε τα ύποπτα emails!</h1>
-    <div id="level-label"></div>
-    <div id="emails"></div>
-    <button id="next-btn" onclick="nextLevel()">➡️ Επόμενη Πίστα</button>
-    <div id="result"></div>
-  </div>
-  <script src="script.js"></script>
+  <header>
+    <h1>📧 Προσομοίωση Email Server - Εντόπισε τα Phishing!</h1>
+  </header>
+
+  <div class="inbox" id="inbox"></div>
+  <div class="progress" id="progress"></div>
+  <button id="nextLevelBtn" onclick="nextLevel()">Επόμενη Πίστα</button>
+
+  <script>
+    const levels = [
+      {
+        phishingCount: 1,
+        emails: [
+          { text: "Το διαγώνισμα Μαθηματικών είναι τη Δευτέρα.", phishing: false },
+          { text: "Ο λογαριασμός σου θα διαγραφεί! Συνδέσου εδώ αμέσως!", phishing: true },
+          { text: "Η εκδρομή μεταφέρθηκε για Παρασκευή.", phishing: false }
+        ]
+      },
+      {
+        phishingCount: 2,
+        emails: [
+          { text: "Συγχαρητήρια! Κέρδισες δωροεπιταγή 500€ από το Jumbo!", phishing: true },
+          { text: "Στείλε μας τα στοιχεία σου για να επανενεργοποιηθεί το email σου.", phishing: true },
+          { text: "Η συνάντηση με τον Σύλλογο Γονέων θα γίνει στην αίθουσα Α3.", phishing: false }
+        ]
+      }
+    ];
+
+    let currentLevel = 0;
+    let marked = 0;
+
+    function loadLevel() {
+      const level = levels[currentLevel];
+      const inbox = document.getElementById("inbox");
+      inbox.innerHTML = "";
+      marked = 0;
+      document.getElementById("nextLevelBtn").style.display = "none";
+      updateProgress();
+
+      level.emails.forEach((email, index) => {
+        const div = document.createElement("div");
+        div.className = "email";
+
+        const text = document.createElement("p");
+        text.textContent = email.text;
+
+        const button = document.createElement("button");
+        button.className = "mark";
+        button.textContent = "Mark as Spam";
+        button.onclick = () => markAsSpam(button, email.phishing);
+
+        div.appendChild(text);
+        div.appendChild(button);
+        inbox.appendChild(div);
+      });
+    }
+
+    function markAsSpam(button, isPhishing) {
+      if (isPhishing) {
+        marked++;
+        button.disabled = true;
+        button.textContent = "Marked ✅";
+        button.style.backgroundColor = "#34a853";
+      } else {
+        button.disabled = true;
+        button.textContent = "Not Phishing";
+        button.style.backgroundColor = "#ccc";
+      }
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const level = levels[currentLevel];
+      document.getElementById("progress").textContent = `Marked: ${marked}/${level.phishingCount}`;
+      if (marked === level.phishingCount) {
+        document.getElementById("nextLevelBtn").style.display = "block";
+      }
+    }
+
+    function nextLevel() {
+      currentLevel++;
+      if (currentLevel < levels.length) {
+        loadLevel();
+      } else {
+        document.body.innerHTML = `
+          <header><h1>🎉 Μπράβο σου!</h1></header>
+          <div class="inbox"><p>Εντόπισες όλα τα phishing emails με επιτυχία!</p>
+          <p>Να θυμάσαι πάντα να προσέχεις τα ύποπτα μηνύματα στο inbox σου!</p></div>`;
+      }
+    }
+
+    window.onload = loadLevel;
+  </script>
 </body>
 </html>
