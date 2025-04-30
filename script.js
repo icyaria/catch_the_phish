@@ -1,3 +1,31 @@
+function renderGameLayout() {
+  document.body.innerHTML = `
+    <header>
+      <div class="logo">📨 MailSim</div>
+      <div class="search-bar">
+        <input type="text" placeholder="Αναζήτηση στο inbox...">
+      </div>
+      <div class="icons">
+        <div class="icon">⚙</div>
+        <div class="icon">❓</div>
+        <div class="icon">👤</div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div id="emailList" class="email-list"></div>
+      <div id="emailView" class="email-view"></div>
+      <div class="progress" id="progress"></div>
+      <button id="nextLevelBtn" onclick="nextLevel()">➡️ Επόμενη Πίστα</button>
+    </div>
+  `;
+}
+
+function startGame() {
+  renderGameLayout();
+  loadLevel();
+}
+
 function showIntro() {
   document.body.innerHTML = `
     <header><h1 style="padding:20px;color:white;background:#1a73e8;">📨 MailSim - Εκπαίδευση Phishing</h1></header>
@@ -6,11 +34,10 @@ function showIntro() {
       <p>Σε αυτό το παιχνίδι, θα δεις εισερχόμενα emails. Ο στόχος σου είναι να εντοπίσεις ποια από αυτά είναι <strong>ύποπτα (phishing)</strong>.</p>
       <p>Κάνε <strong>κλικ</strong> στο κάθε email για να το ανοίξεις, και αν υποψιάζεσαι ότι είναι phishing, πάτησε <strong>\"Mark as Spam\"</strong>.</p>
       <p>Πρόσεξε τους συνδέσμους και τα αιτήματα για προσωπικά δεδομένα!</p>
-      <button class="spam-btn" style="margin-top:30px;" onclick="loadLevel()">👉 Ξεκίνα το Παιχνίδι</button>
+      <button class="spam-btn" style="margin-top:30px;" onclick="startGame()">👉 Ξεκίνα το Παιχνίδι</button>
     </div>
   `;
 }
-
 
 const levels = [
   {
